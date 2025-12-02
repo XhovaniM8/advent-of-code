@@ -1,0 +1,55 @@
+# -------------------------
+# Build and CMake artifacts
+# -------------------------
+/build/
+/CMakeFiles/
+/CMakeCache.txt
+/Makefile
+/cmake_install.cmake
+/install_manifest.txt
+/compile_commands.json
+
+# Object files and binaries
+*.o
+*.obj
+*.a
+*.so
+*.dll
+*.dylib
+*.exe
+
+# Ninja builds
+/.ninja_deps
+/.ninja_log
+
+# -------------------------
+# Editors and IDEs
+# -------------------------
+# Neovim swap/backup files
+*.swp
+*.swo
+*.swm
+
+# VSCode
+.vscode/
+
+# CLion / JetBrains
+.idea/
+*.iml
+
+# -------------------------
+# OS-specific junk
+# -------------------------
+.DS_Store
+Thumbs.db
+
+# -------------------------
+# Project-specific artifacts
+# -------------------------
+# Ignore accidental build output at repo root
+/aoc_2025_day01
+/day01
+
+# Ignore temporary AoC files
+*.tmp
+
