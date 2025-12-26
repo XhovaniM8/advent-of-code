@@ -1,17 +1,4 @@
 // Day 10: Factory - Indicator Light Configuration
-// Hardware Model: GF(2) Linear Algebra / XOR Gaussian Elimination
-//
-// THIS IS EXCELLENT FOR HARDWARE!
-// - Problem reduces to solving XOR linear system
-// - Each button press toggles a subset of lights
-// - Find minimum number of presses to reach target state
-// - GF(2) arithmetic: only XOR operations (native to hardware)
-//
-// FPGA Implementation Notes:
-// - Bit manipulation is native and fast
-// - Gaussian elimination over GF(2)
-// - Each row operation is XOR of bit vectors
-// - Highly parallelizable row operations
 
 #include "aoc.hpp"
 #include <bitset>
