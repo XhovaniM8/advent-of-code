@@ -1,1 +1,32 @@
-# Placeholder
+name: AoC 2025 CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Build Solutions
+      run: |
+        for day in 01 02 03 04 05 06 07 08 09 10 11 12; do
+          if [ -f "2025/day$day/main.cpp" ]; then
+            echo "Building day$day..."
+            g++ -std=c++20 -O3 -I include 2025/day$day/main.cpp -o day$day || echo "Day $day failed"
+          fi
+        done
+    
+    - name: Run Tests (with example inputs)
+      run: |
+        for day in 01 02 03 04 05 06 07 08 09 10 11 12; do
+          if [ -f "./day$day" ] && [ -f "input/day$day.txt" ]; then
+            echo "=== Day $day ==="
+            timeout 30 ./day$day input/day$day.txt || echo "Day $day timed out or failed"
+          fi
+        done

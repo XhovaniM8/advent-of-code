@@ -1,81 +1,62 @@
 // Day 3: Lobby - Battery Joltage
-// Hardware Model: Parallel max-pair finder per row
-// 
-// Each row is processed independently (embarrassingly parallel).
-// Within each row, we find the two largest digits to form max joltage.
-// 
+// Hardware Model: Streaming max finder with running state
+//
+// Find the maximum 2-digit joltage by selecting exactly 2 batteries.
+// The joltage is formed by the digits in their original order.
+// Need to find max over all pairs (i,j) where i < j of: digit[i]*10 + digit[j]
+//
 // FPGA Implementation Notes:
-// - Each row can be processed by a separate PE
-// - Within a row: single-pass max-2 tracker (2 registers)
-// - Reduction tree for final sum
+// - Single pass: track max digit seen so far
+// - For each new digit d at position j: candidate = max_so_far * 10 + d
+// - Update running maximum joltage
+// - Fully pipelined, one result per row
 
 #include "aoc.hpp"
 
-struct MaxTracker {
-    // Hardware registers for tracking top 2 digits
-    int first_max = -1;   // Largest digit
-    int first_pos = -1;   // Position of largest
-    int second_max = -1;  // Second largest
-    int second_pos = -1;  // Position of second largest
-    
-    // Single cycle update (combinational logic)
-    void update(int digit, int pos) {
-        if (digit > first_max) {
-            second_max = first_max;
-            second_pos = first_pos;
-            first_max = digit;
-            first_pos = pos;
-        } else if (digit > second_max) {
-            second_max = digit;
-            second_pos = pos;
-        }
-    }
-    
-    // Form the two-digit number (largest digit first)
-    int get_joltage() const {
-        if (first_pos < second_pos) {
-            return first_max * 10 + second_max;
-        } else {
-            return second_max * 10 + first_max;
-        }
-    }
-};
+int64_t solve_part1(const std::vector<std::string> &lines) {
+  int64_t total = 0;
 
-int64_t solve_part1(const std::vector<std::string>& lines) {
-    int64_t total = 0;
-    
-    // Each row processed in parallel (in HW, would be systolic array)
-    for (const auto& line : lines) {
-        if (line.empty()) continue;
-        
-        MaxTracker tracker;
-        
-        // Stream through digits - single pass
-        for (size_t i = 0; i < line.size(); i++) {
-            if (line[i] >= '1' && line[i] <= '9') {
-                tracker.update(line[i] - '0', static_cast<int>(i));
-            }
+  for (const auto &line : lines) {
+    if (line.empty())
+      continue;
+
+    int max_joltage = 0;
+    int max_digit_so_far = 0; // Maximum digit seen to the left
+
+    for (char c : line) {
+      if (c >= '1' && c <= '9') {
+        int digit = c - '0';
+
+        // Best joltage using this digit as the second digit
+        if (max_digit_so_far > 0) {
+          int joltage = max_digit_so_far * 10 + digit;
+          max_joltage = std::max(max_joltage, joltage);
         }
-        
-        total += tracker.get_joltage();
+
+        // Update max digit seen for future iterations
+        max_digit_so_far = std::max(max_digit_so_far, digit);
+      }
     }
-    
-    return total;
+
+    total += max_joltage;
+  }
+
+  return total;
 }
 
-int main(int argc, char* argv[]) {
-    if (argc < 2) {
-        std::cerr << "Usage: " << argv[0] << " <input_file>\n";
-        return 1;
-    }
-    
-    auto lines = aoc::read_lines(argv[1]);
-    
-    {
-        aoc::Timer t("Part 1");
-        auto result = solve_part1(lines);
-        std::cout << "Part 1: " << result << "\n";
-    }
-    
-    return 0;
+int main(int argc, char *argv[]) {
+  if (argc < 2) {
+    std::cerr << "Usage: " << argv[0] << " <input_file>\n";
+    return 1;
+  }
+
+  auto lines = aoc::read_lines(argv[1]);
+
+  {
+    aoc::Timer t("Part 1");
+    auto result = solve_part1(lines);
+    std::cout << "Part 1: " << result << "\n";
+  }
+
+  return 0;
 }

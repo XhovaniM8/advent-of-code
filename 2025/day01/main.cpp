@@ -1,92 +1,68 @@
-#include "input.hpp"
-#include <iostream>
-#include <string>
-#include <vector>
+// Day 1: Secret Entrance - Dial Safe
+// Hardware Model: Modular counter with zero-crossing detector
+//
+// FPGA Implementation Notes:
+// - 7-bit counter (0-99) with modular arithmetic
+// - Zero-crossing detector for Part 2
+// - Comparator checks position == 0 each cycle
+// - Could stream rotations: parse -> step -> detect -> accumulate
 
-// Part 1: only count when we *land* on 0 after a full rotation.
-int count_zero_hits(const std::vector<std::string> &lines) {
-  int pos = 50;
-  int zero_hits = 0;
+#include "aoc.hpp"
+
+struct DialSimulator {
+  int position = 50; // 7-bit register (0-99)
+  int64_t zero_end_count = 0;
+  int64_t zero_cross_count = 0;
+
+  // Process a single rotation, counting zero crossings
+  void rotate(char direction, int distance) {
+    int step = (direction == 'R') ? 1 : -1;
+
+    // Step through each click (for Part 2 zero-crossing detection)
+    // In hardware: would be a state machine stepping through
+    for (int i = 0; i < distance; i++) {
+      position = (position + step + 100) % 100;
+      if (position == 0) {
+        zero_cross_count++;
+      }
+    }
+
+    // Check if we ended at 0 (for Part 1)
+    if (position == 0) {
+      zero_end_count++;
+    }
+  }
+};
+
+std::pair<int64_t, int64_t> solve(const std::vector<std::string> &lines) {
+  DialSimulator dial;
 
   for (const auto &line : lines) {
     if (line.empty())
       continue;
 
-    char dir = line[0];
-    int dist = std::stoi(line.substr(1));
+    char direction = line[0];
+    int distance = std::stoi(line.substr(1));
 
-    if (dir == 'L') {
-      pos = (pos - dist) % 100;
-      if (pos < 0)
-        pos += 100;
-    } else if (dir == 'R') {
-      pos = (pos + dist) % 100;
-    }
-
-    if (pos == 0) {
-      ++zero_hits;
-    }
+    dial.rotate(direction, distance);
   }
 
-  return zero_hits;
+  return {dial.zero_end_count, dial.zero_cross_count};
 }
 
-// Part 2: count *every click* that hits 0, including mid-rotation.
-long long count_zero_clicks(const std::vector<std::string> &lines) {
-  int pos = 50;             // current dial position
-  long long total_hits = 0; // total clicks landing on 0
-
-  for (const auto &line : lines) {
-    if (line.empty())
-      continue;
-
-    char dir = line[0];
-    long long dist = std::stoll(line.substr(1)); // distance might be large
-
-    if (dir == 'R') {
-      long long k0 = (100 - pos) % 100;
-      if (k0 == 0)
-        k0 = 100; // if pos==0, first hit is after 100 clicks
-
-      if (dist >= k0) {
-        total_hits += 1 + (dist - k0) / 100;
-      }
-
-      pos = static_cast<int>((pos + dist) % 100);
-
-    } else if (dir == 'L') {
-      long long k0 = pos % 100;
-      if (k0 == 0)
-        k0 = 100;
-
-      if (dist >= k0) {
-        total_hits += 1 + (dist - k0) / 100;
-      }
-
-      long long new_pos = pos - dist;
-      new_pos %= 100;
-      if (new_pos < 0)
-        new_pos += 100;
-      pos = static_cast<int>(new_pos);
-    }
-  }
-
-  return total_hits;
-}
-
-int main() {
-  try {
-    auto lines = aoc::read_lines("input/day01.txt");
-
-    int part1 = count_zero_hits(lines);
-    long long part2 = count_zero_clicks(lines);
-
-    std::cout << part1 << "\n";
-    std::cout << part2 << "\n";
-
-  } catch (const std::exception &e) {
-    std::cerr << "Error: " << e.what() << "\n";
+int main(int argc, char *argv[]) {
+  if (argc < 2) {
+    std::cerr << "Usage: " << argv[0] << " <input_file>\n";
     return 1;
+  }
+
+  auto lines = aoc::read_lines(argv[1]);
+
+  {
+    aoc::Timer t("Both Parts");
+    auto [part1, part2] = solve(lines);
+    std::cout << "Part 1: " << part1 << "\n";
+    std::cout << "Part 2: " << part2 << "\n";
   }
 
   return 0;
