@@ -1,16 +1,4 @@
 // Day 8: Playground - Junction Box Connectivity
-// Hardware Model: Parallel Distance Matrix + Union-Find
-//
-// Two phases:
-// 1. Compute all pairwise distances (embarrassingly parallel)
-// 2. Sort and process edges (Kruskal's-style)
-//
-// FPGA Implementation Notes:
-// - Phase 1: Systolic array for distance computation
-//   - Each PE computes distance for one pair
-//   - 3D Euclidean: sqrt(dx² + dy² + dz²)
-// - Phase 2: Streaming merge sort + union-find
-// - Circuit sizes tracked with counters
 
 #include "aoc.hpp"
 #include <cmath>
