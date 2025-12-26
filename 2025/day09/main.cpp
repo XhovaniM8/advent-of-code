@@ -1,9 +1,4 @@
 // Day 9: Movie Theater - Largest Rectangle with Red Tile Corners
-// Hardware Model: Parallel Rectangle Area Computation
-//
-// Given N red tiles, compute all O(N²) pairs and find max area.
-// Each pair defines opposite corners of a rectangle.
-// Area INCLUDES the boundary tiles, so area = (|x2-x1|+1) * (|y2-y1|+1)
 
 #include "aoc.hpp"
 
