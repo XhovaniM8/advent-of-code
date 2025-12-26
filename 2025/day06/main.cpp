@@ -1,14 +1,4 @@
 // Day 6: Trash Compactor - Cephalopod Math
-// Hardware Model: Column-parallel MAC (Multiply-Accumulate) units
-//
-// Problems are arranged in columns, each column is independent.
-// Within a column: accumulate numbers, then apply final operation.
-//
-// FPGA Implementation Notes:
-// - Parse columns in parallel (column-major access)
-// - Each column has its own accumulator register
-// - Final operation (+ or *) applied at column end
-// - Reduction tree for grand total
 
 #include "aoc.hpp"
 
