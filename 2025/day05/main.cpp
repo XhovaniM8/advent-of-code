@@ -1,16 +1,4 @@
 // Day 5: Cafeteria - Fresh Ingredient Range Checking
-// Hardware Model: Parallel Range Comparators / Interval Membership
-//
-// Each ingredient ID needs to be checked against multiple ranges.
-// This is highly parallelizable:
-// - All ranges can be checked simultaneously
-// - OR reduction across all range matches
-//
-// FPGA Implementation Notes:
-// - Pipelined comparator array (one per range)
-// - Each comparator: (id >= start) AND (id <= end)
-// - Tree reduction OR for final result
-// - Streaming: one ingredient ID per clock
 
 #include "aoc.hpp"
 
