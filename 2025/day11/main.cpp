@@ -1,14 +1,4 @@
 // Day 11: Reactor - Path Counting in DAG
-// Hardware Model: Dynamic Programming / Memoized Graph Traversal
-//
-// Count all paths from "you" to "out" in a directed graph.
-// Since data only flows forward, this is a DAG.
-//
-// FPGA Implementation Notes:
-// - Topological sort + DP propagation
-// - Each node accumulates path counts from predecessors
-// - Wavefront processing (nodes ready when all inputs processed)
-// - Could use systolic array for regular graph structures
 
 #include "aoc.hpp"
 
