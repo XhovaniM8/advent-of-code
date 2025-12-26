@@ -1,16 +1,4 @@
 // Day 4: Printing Department - Neighbor Counting
-// Hardware Model: 2D Stencil Operation (3x3 window)
-//
-// This is PERFECT for hardware acceleration!
-// - Each cell can be computed independently
-// - Classic 2D convolution/stencil pattern
-// - Line buffer + sliding window architecture
-//
-// FPGA Implementation Notes:
-// - Use line buffers (2 rows of BRAM) for streaming
-// - 3x3 sliding window with 9 comparators per PE
-// - Fully pipelined: 1 result per clock after initial latency
-// - Could tile for parallel PEs processing different regions
 
 #include "aoc.hpp"
 
