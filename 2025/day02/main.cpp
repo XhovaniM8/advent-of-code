@@ -1,15 +1,4 @@
 // Day 2: Gift Shop - Invalid Product IDs
-// Hardware Model: Pattern matcher / string comparator
-//
-// An ID is invalid if it's a repeated pattern:
-// - Part 1: exactly 2 repetitions (e.g., "123123")
-// - Part 2: 2 or more repetitions (e.g., "123123", "121212", "1111")
-//
-// FPGA Implementation Notes:
-// - For each candidate number, convert to string
-// - Check divisibility of length by pattern length
-// - Compare substrings (parallel comparators)
-// - Accumulator for sum of invalid IDs
 
 #include "aoc.hpp"
 
