@@ -1,5 +1,5 @@
 // Day 12: Christmas Tree Farm - Present Packing
-// Key insight: Shapes can leave gaps - only # cells matter for collision
+
 #include "aoc.hpp"
 #include <chrono>
 #include <climits>
