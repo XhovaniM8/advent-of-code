@@ -1,11 +1,4 @@
 // Day 1: Secret Entrance - Dial Safe
-// Hardware Model: Modular counter with zero-crossing detector
-//
-// FPGA Implementation Notes:
-// - 7-bit counter (0-99) with modular arithmetic
-// - Zero-crossing detector for Part 2
-// - Comparator checks position == 0 each cycle
-// - Could stream rotations: parse -> step -> detect -> accumulate
 
 #include "aoc.hpp"
 
