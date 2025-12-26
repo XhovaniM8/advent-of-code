@@ -1,15 +1,4 @@
 // Day 3: Lobby - Battery Joltage
-// Hardware Model: Streaming max finder with running state
-//
-// Find the maximum 2-digit joltage by selecting exactly 2 batteries.
-// The joltage is formed by the digits in their original order.
-// Need to find max over all pairs (i,j) where i < j of: digit[i]*10 + digit[j]
-//
-// FPGA Implementation Notes:
-// - Single pass: track max digit seen so far
-// - For each new digit d at position j: candidate = max_so_far * 10 + d
-// - Update running maximum joltage
-// - Fully pipelined, one result per row
 
 #include "aoc.hpp"
 
