@@ -1,17 +1,4 @@
 // Day 7: Laboratories - Tachyon Beam Splitting
-// Hardware Model: Cellular Automata / Systolic Array
-//
-// THIS IS EXCELLENT FOR HARDWARE ACCELERATION!
-// - Grid-based simulation with local rules
-// - Each cell updates based only on neighbors
-// - Wavefront propagation pattern
-//
-// FPGA Implementation Notes:
-// - Systolic array: each PE handles one column
-// - Row-by-row processing (streaming)
-// - Beam state propagates down with splits
-// - Counter per PE for split events
-// - Reduction tree for total count
 
 #include "aoc.hpp"
 #include <set>
